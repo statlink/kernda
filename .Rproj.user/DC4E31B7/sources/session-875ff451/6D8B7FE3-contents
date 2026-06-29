@@ -1,11 +1,11 @@
-\name{cross-validation for the kernel regression with a binary response}
+\name{Cross-validation for the kernel regression with a binary response}
 \alias{cv.lrkde}
 \title{
-cross-validation for the kernel regression with a binary response
+Cross-validation for the kernel regression with a binary response
 }
 
 \description{
-cross-validation for the kernel regression with a binary response.
+Cross-validation for the kernel regression with a binary response.
 }
 
 \usage{
