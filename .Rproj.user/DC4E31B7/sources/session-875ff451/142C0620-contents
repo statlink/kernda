@@ -1,0 +1,5 @@
+lr.kde <- function(xnew, groups, x, h, ncores = 1) {
+  mod <- kernreg::kern_reg(xnew, groups, x, h, type = "gauss", ncores = ncores)
+  list( prob = mod, cl = round(mod) )
+}
+
