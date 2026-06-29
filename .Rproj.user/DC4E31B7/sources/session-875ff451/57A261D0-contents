@@ -1,5 +1,5 @@
 cv.lrkde <- function(groups, x, h = seq(0.1, 1, length = 10), nfolds = 10,
-             folds = NULL, seed = NULL, graph = FALSE, ncores = 1) {
+             folds = NULL, seed = NULL, ncores = 1) {
 
   if ( is.null(folds) )  folds <- Compositional::makefolds(groups, nfolds = nfolds,
                                   stratified = TRUE, seed = seed)

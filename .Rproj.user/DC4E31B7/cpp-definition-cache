@@ -1,0 +1,19 @@
+[
+    {
+        "file": "C:/Users/mtsag/Documents/GitHub/kernda/src/kde_da_cv.cpp",
+        "file_last_write": 1782588695.0,
+        "definitions": [
+            {
+                "usr": "c:@F@kde_da#&1$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S0_#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "kde_da(const Rcpp::NumericVector &, const Rcpp::IntegerVector &, const Rcpp::NumericVector &, const Rcpp::NumericVector &, int)",
+                "file": "C:/Users/mtsag/Documents/GitHub/kernda/src/kde_da_cv.cpp",
+                "line": 13,
+                "column": 21,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]

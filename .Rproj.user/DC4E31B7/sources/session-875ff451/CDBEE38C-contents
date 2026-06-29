@@ -1,0 +1,87 @@
+\name{cross-validation for the kernel regression with a binary response}
+\alias{cv.lrkde}
+\title{
+cross-validation for the kernel regression with a binary response
+}
+
+\description{
+cross-validation for the kernel regression with a binary response.
+}
+
+\usage{
+cv.lrkde(groups, x, h = seq(0.1, 1, length = 10), type = "gauss",
+nfolds = 10, folds = NULL, seed = NULL, graph = FALSE, ncores = 1)
+}
+
+\arguments{
+\item{groups}{
+A vector with the binary response (0s and 1s).
+}
+\item{x}{
+A matrix with the available predictor variables.
+}
+\item{h}{
+A vector with the bandwidth value(s) \eqn{h} to consider.
+}
+\item{type}{
+The type of kernel to use, "gauss" or "laplace".
+}
+\item{nfolds}{
+The number of folds. Set to 10 by default.
+}
+\item{folds}{
+If you have the list with the folds supply it here. You can also leave it NULL and it will create folds.
+}
+\item{seed}{
+You can specify your own seed number here or leave it NULL.
+}
+\item{graph}{
+If graph is TRUE (default value) a plot will appear.
+}
+\item{ncores}{
+The number of cores to use. Default value is 1.
+}
+}
+
+\details{
+A k-fold cross-validation for the kernel regression with a binary response is performed
+and the AUC is computed.
+}
+
+\value{
+A list including:
+\item{cv}{
+A numerical matrix with the percentage of correct classification for each fold and bandwidth value.
+}
+\item{perf}{
+The average percentage of correct classification for each bandwidth value.
+}
+\itme{hopt}{
+The optimal bandwidth value.
+}
+}
+
+\references{
+Wand M. P. and Jones M. C. (1994). Kernel smoothing. CRC press.
+}
+
+\author{
+Michail Tsagris.
+
+R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
+}
+
+%\note{
+%%  ~~further notes~~
+%}
+
+\seealso{
+\code{\link{lr.kde}}
+}
+
+\examples{
+y <- as.numeric( iris[1:100 5] )
+x <- iris[1:100, 2:4]
+cv.lrkde(y, x)
+}
+
