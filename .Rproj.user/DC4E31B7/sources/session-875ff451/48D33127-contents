@@ -1,0 +1,12 @@
+lr.kde2 <- function(groups, x, h) {
+
+  fun <- function(h, groups, x) {
+    est <- kernreg::kern_reg(x, groups, x, h, ncores = 1)
+    Rfast::auc(groups, est)
+  }
+
+  mod <- optimize(fun, h, groups = groups, x = x, maximum = TRUE)
+  res <- c(mod$maximum, auc = mod$objective)
+  names(res) <- c("hopt", "auc")
+  res
+}
