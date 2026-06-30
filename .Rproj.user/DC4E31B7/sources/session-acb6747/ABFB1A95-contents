@@ -1,0 +1,78 @@
+\name{lr.kde}
+\alias{lr.kde}
+\alias{lr.kde2}
+\alias{lr.kde3}
+\title{
+Kernel regression with a binary response
+}
+
+\description{
+Kernel regression with a binary response.
+}
+
+\usage{
+lr.kde(xnew, groups, x, h, ncores = 1)
+lr.kde2(groups, x, h)
+lr.kde3(groups, x, h = seq(0.01, 2, by = 0.01), ncores = 1)
+}
+
+\arguments{
+\item{xnew}{
+A matrix with the new predictor variables whose compositions are to be predicted.
+}
+\item{groups}{
+A numerical vector or a matrix with the binary response value (0s and 1s).
+}
+\item{x}{
+A matrix with the available predictor variables.
+}
+\item{h}{
+The bandwidth value(s) to consider.
+}
+\item{ncores}{
+The number of cores to use. If greater than 1, parallel computing will take
+place. It is advisable to use it if you have many observations and or many
+variables, otherwise it will slow down the process. The default is 1, meaning
+that code is executed serially.
+}
+}
+
+\details{
+The Nadaraya-Watson estimator regression is applied. The function lr.kde2() chooses the bandwitdth
+value that maximizes the AUC, using the command optimize(). The function lr.kde3() does a similar
+job but for given bandwidth values and plots the results.
+}
+
+\value{
+For the lr.kde() a list including:
+
+\item{prob}{
+The estimated probabilities of belonging to class 1.
+}
+\item{cl}{
+A vector with the estimated classes.
+}
+}
+
+\references{
+Wand M. P. and Jones M. C. (1994). Kernel smoothing. CRC press.
+}
+
+\author{
+Michail Tsagris and Christos Adam.
+}
+
+%\note{
+  %%  ~~further notes~~
+    %}
+
+\seealso{
+\code{\link{cv.lrkde}}
+}
+
+\examples{
+groups <- as.numeric( iris[1:100, 5] ) - 1
+x <- iris[1:100, 2:4]
+est <- lr.kde(x, groups, x, h = c(0.1, 0.2) )
+}
+
