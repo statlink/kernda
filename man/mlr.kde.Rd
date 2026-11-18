@@ -75,9 +75,7 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 }
 
 \examples{
-groups <- as.numeric( iris[51:150, 5] ) - 2
-x <- iris[51:150, 2:4]
-est <- lr.kde(x, groups, x, h = c(0.1, 0.2) )
-lr.kde2(groups, x, h = c(0.05, 2), nfolds = 5, seed = 1)
-lr.kde3(groups, x, h = seq(0.1, 1, by = 0.1), nfolds = 5, seed = 1)
+groups <- iris[, 5]
+x <- iris[, 1:4]
+est <- mlr.kde(x, groups, x, h = c(0.1, 0.2) )
 }

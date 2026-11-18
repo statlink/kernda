@@ -1,4 +1,4 @@
-lr.kde2 <- function(groups, x, h, nfolds = 10, folds = NULL, seed = NULL, ncores = 1) {
+lr.kde2 <- function(groups, x, h, nfolds = 10, folds = NULL, ncores = 1) {
 
   x <- .num_matrix(x, "x")
   y <- as.vector( .binary_response(groups, nrow(x)) )
