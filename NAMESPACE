@@ -1,9 +1,10 @@
 useDynLib(kernda, .registration = TRUE)
 
-importFrom("Rfast", auc, colaucs, colmeans, rowMaxs)
+importFrom("Rfast", colaucs, colmeans)
 importFrom("graphics", abline)
-importFrom("stats", optimize)
+importFrom("stats", bw.nrd, optimize)
 importFrom("Rcpp", sourceCpp)
 importFrom("kernreg", kern_reg)
+importFrom("Compositional", makefolds)
 
 exportPattern("^[[:alpha:]]+")

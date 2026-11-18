@@ -1,0 +1,7 @@
+lr.kde3 <- function(groups, x, h = seq(0.01, 2, by = 0.01), nfolds = 10,
+                    folds = NULL, seed = NULL, ncores = 1) {
+
+  mod <- cv.lrkde(groups, x, h = h, nfolds = nfolds, folds = folds,
+                  graph = TRUE, ncores = ncores)
+  list(perf = mod$perf, hopt = mod$hopt)
+}

@@ -8,7 +8,7 @@ Kernel Discriminant Analysis
 \description{
 Functions to perform discriminant analysis using kernel density estimation.
 For the case of binary classification the package relies on the Nadaraya-Watson estimator.
-References: Wand M.P. and Jones M.C. (1994). Kernel smoothing. CRC press.
+References: Wand M.P. and Jones M.C. (1995). Kernel smoothing. CRC Press.
 }
 
 \details{
@@ -27,12 +27,3 @@ Michail Tsagris \email{mtsagris@uoc.gr} and Nikolaos Kontemeniotis \email{kontem
 \section{Maintainers}{
 Michail Tsagris \email{mtsagris@uoc.gr}.
 }
-
-%\references{
-%Hansen, B. E. (2022). Econometrics, Princeton University Press.
-%}
-
-
-
-
-

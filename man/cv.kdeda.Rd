@@ -1,36 +1,32 @@
 \name{cv.kdeda}
 \alias{cv.kdeda}
 \title{
-Cross-validation for the kernel discrimininant analysis
+Cross-validation for the kernel discriminant analysis
 }
 
 \description{
-Cross-validation for the kernel discrimininant analysis.
+Cross-validation for the kernel discriminant analysis.
 }
 
 \usage{
-cv.kdeda(groups, x, h = seq(0.1, 1, length = 10), nfolds = 10,
-         folds = NULL, seed = NULL, ncores = 1)
+cv.kdeda(groups, x, h = seq(0.1, 1, length = 10), nfolds = 10, folds = NULL, ncores = 1)
 }
 
 \arguments{
 \item{groups}{
-A variable indicating the groupings.
+A variable indicating the groupings. Any labels are allowed, but not missing values.
 }
 \item{x}{
-A numerical vector with the data.
+A numerical vector with the data. Missing values are not allowed.
 }
 \item{h}{
 A vector with the bandwidth parameter values of the Gaussian kernel.
 }
 \item{nfolds}{
-How many folds to create?
+How many folds to create? This is ignored if folds is supplied.
 }
 \item{folds}{
 Do you already have a list with the folds? If not, leave this NULL.
-}
-\item{seed}{
-If seed is TRUE, the results will always be the same.
 }
 \item{ncores}{
 The number of cores to use.
@@ -38,16 +34,19 @@ The number of cores to use.
 }
 
 \details{
-This is described in Chapter 8.2 of Hansen (2019). The idea is to inimise the sum of squares of the residuals under the constraint \eqn{R^\top \bm{\beta} = c}. As mentioned above, be careful with the input you give in the x matrix and the R vector. The cls() function performs a single regression model, whereas the mcls() function performs a regression for each column of y. Each regression is independent of the others.
+A k-fold cross-validation of \code{\link{kde_da}} is performed, with stratified folds, and the
+proportion of correct classification is computed for each bandwidth value. The bandwidth is on the
+scale of x, so the default values may need to be changed for data on a different scale. If many
+bandwidth values have the same performance, the first of them is returned.
 }
 
 \value{
 A list including:
 \item{cv}{
-A numerical matrix with the percentage of correct classification for each fold and bandwidth value.
+A numerical matrix with the proportion of correct classification for each fold and bandwidth value.
 }
 \item{perf}{
-The average percentage of correct classification for each bandwidth value.
+The average proportion of correct classification for each bandwidth value.
 }
 \item{hopt}{
 The optimal bandwidth value.
@@ -61,9 +60,10 @@ Hastie T., Tibshirani R. and Friedman J. (2009). The elements of statistical lea
 }
 
 \author{
-Michail Tsagris.
+Michail Tsagris and Nikolaos Kontemeniotis.
 
-R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
+R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}
+and Nikolaos Kontemeniotis \email{kontemeniotisn@gmail.com}.
 }
 
 %\note{
@@ -71,8 +71,7 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 %}
 
 \seealso{
-\code{\link{kde_da}, \link{lr.kde}
-}
+\code{\link{kde_da}, \link{lr.kde}}
 }
 
 \examples{

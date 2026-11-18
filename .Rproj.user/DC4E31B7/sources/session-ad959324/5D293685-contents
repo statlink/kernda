@@ -1,0 +1,21 @@
+cv.lrkde <- function(groups, x, h = seq(0.1, 1, length = 10), nfolds = 10,
+             folds = NULL, seed = NULL, graph = FALSE, ncores = 1) {
+
+  x <- .num_matrix(x, "x")
+  y <- as.vector( .binary_response(groups, nrow(x)) )
+  .check_h(h)
+  folds <- .get_folds(y, nrow(x), nfolds, folds, seed)
+
+  cv <- .cv_auc(y, x, h, folds, ncores)
+  perf <- colMeans(cv, na.rm = TRUE)
+  names(perf) <- paste("h=", h, sep = "")
+
+  if ( graph ) {
+    plot(h, perf, xlab = "Bandwidth (h) values", ylab = "AUC values", type = "l", lwd = 2,
+         cex.lab = 1.3, cex.axis = 1.3)
+    abline(h = seq(min(perf), max(perf), length = 10), lty = 2, col = "lightgrey" )
+    abline(v = h[which.max(perf)], col = 3, lwd = 2)
+  }
+
+  list( cv = cv, perf = perf, hopt = h[which.max(perf)] )
+}

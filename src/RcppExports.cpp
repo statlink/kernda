@@ -10,24 +10,24 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// kde_da
-Rcpp::IntegerMatrix kde_da(const Rcpp::NumericVector& xnew, const Rcpp::IntegerVector& groups, const Rcpp::NumericVector& x, const Rcpp::NumericVector& h, int ncores);
-RcppExport SEXP _kernda_kde_da(SEXP xnewSEXP, SEXP groupsSEXP, SEXP xSEXP, SEXP hSEXP, SEXP ncoresSEXP) {
+// kde_da_cpp
+Rcpp::List kde_da_cpp(const Rcpp::NumericVector& xnew, const Rcpp::IntegerVector& groups, const Rcpp::NumericVector& x, const Rcpp::NumericMatrix& H, int ncores);
+RcppExport SEXP _kernda_kde_da_cpp(SEXP xnewSEXP, SEXP groupsSEXP, SEXP xSEXP, SEXP HSEXP, SEXP ncoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type xnew(xnewSEXP);
     Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type groups(groupsSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type h(hSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type H(HSEXP);
     Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
-    rcpp_result_gen = Rcpp::wrap(kde_da(xnew, groups, x, h, ncores));
+    rcpp_result_gen = Rcpp::wrap(kde_da_cpp(xnew, groups, x, H, ncores));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_kernda_kde_da", (DL_FUNC) &_kernda_kde_da, 5},
+    {"_kernda_kde_da_cpp", (DL_FUNC) &_kernda_kde_da_cpp, 5},
     {NULL, NULL, 0}
 };
 

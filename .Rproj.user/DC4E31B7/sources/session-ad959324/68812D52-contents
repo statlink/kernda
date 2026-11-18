@@ -1,0 +1,79 @@
+## Internal helpers (not exported).
+
+## Returns a numeric matrix. kern_reg() is always given matrices, so that it
+## cannot alter the objects of the user.
+.num_matrix <- function(x, name, na.ok = FALSE) {
+  x <- as.matrix(x)
+  if ( !is.numeric(x) )  stop("'", name, "' must be numeric.", call. = FALSE)
+  storage.mode(x) <- "double"
+  if ( !na.ok  &  !all( is.finite(x) ) )
+    stop("'", name, "' must not contain missing or infinite values.", call. = FALSE)
+  x
+}
+
+## New observations: a plain vector is read row-wise when x has many columns.
+.new_matrix <- function(xnew, x) {
+  if ( is.null( dim(xnew) )  &  ncol(x) > 1 ) {
+    if ( !is.numeric(xnew)  |  length(xnew) %% ncol(x) != 0 )
+      stop("'xnew' does not match the number of columns of 'x'.", call. = FALSE)
+    xnew <- matrix(xnew, ncol = ncol(x), byrow = TRUE)
+  }
+  xnew <- .num_matrix(xnew, "xnew", na.ok = TRUE)
+  if ( ncol(xnew) != ncol(x) )
+    stop("'xnew' and 'x' must have the same number of columns.", call. = FALSE)
+  if ( any( is.infinite(xnew) ) )  stop("'xnew' must not contain infinite values.", call. = FALSE)
+  xnew
+}
+
+## Binary response, returned as a numeric matrix.
+.binary_response <- function(groups, n, multi = FALSE, both = TRUE) {
+  y <- .num_matrix(groups, "groups")
+  if ( nrow(y) != n )  stop("'groups' and 'x' must have the same number of observations.", call. = FALSE)
+  if ( !multi  &  ncol(y) != 1 )  stop("'groups' must be a vector.", call. = FALSE)
+  if ( !all(y == 0 | y == 1) )  stop("'groups' must contain only 0s and 1s.", call. = FALSE)
+  if ( both  &  ( all(y == 0) | all(y == 1) ) )
+    stop("'groups' must contain both 0s and 1s.", call. = FALSE)
+  y
+}
+
+.check_h <- function(h) {
+  if ( !is.numeric(h)  |  length(h) == 0 )  stop("'h' must be numeric.", call. = FALSE)
+  if ( !all( is.finite(h) )  |  any(h <= 0) )
+    stop("'h' must contain positive, finite values.", call. = FALSE)
+  invisible(NULL)
+}
+
+
+## Creates the folds, or checks the ones supplied by the user.
+.get_folds <- function(groups, n, nfolds, folds) {
+  if ( is.null(folds) ) {
+    folds <- Compositional::makefolds(groups, nfolds = nfolds, stratified = TRUE, seed = FALSE)
+  } else {
+    if ( !is.list(folds)  |  length(folds) < 2 )
+      stop("'folds' must be a list with at least two folds.", call. = FALSE)
+    ind <- unlist(folds)
+    if ( length(ind) == 0  |  !is.numeric(ind)  |  anyNA(ind)  |  any(ind < 1 | ind > n | ind != round(ind)) )
+      stop("'folds' must contain observation numbers between 1 and n.", call. = FALSE)
+  }
+  folds
+}
+
+## Cross-validated AUC, one row per fold and one column per bandwidth. A test
+## fold with one class only has no AUC and is left as NA.
+.cv_auc <- function(y, x, h, folds, ncores) {
+  cv <- matrix( NA_real_, nrow = length(folds), ncol = length(h) )
+  colnames(cv) <- paste("h=", h, sep = "")
+
+  for ( i in seq_along(folds) ) {
+    nu <- folds[[ i ]]
+    ytest <- y[nu]   ## groups of test sample
+    if ( length( unique(ytest) ) < 2 )  next
+    est <- kernreg::kern_reg( x[nu, , drop = FALSE], matrix(y[-nu], ncol = 1),
+                              x[-nu, , drop = FALSE], h = h, type = "gauss", ncores = ncores )
+    cv[i, ] <- Rfast::colaucs( ytest, as.matrix(est) )
+  }
+
+  if ( all( is.na(cv) ) )
+    stop("Every test fold contains one class only, use fewer folds.", call. = FALSE)
+  cv
+}

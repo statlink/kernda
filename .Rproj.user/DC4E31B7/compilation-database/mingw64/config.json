@@ -1,9 +1,10 @@
 {
     "args": [
-        "-std=gnu++17",
-        "-IC:/PROGRA~1/R/R-45~1.2/include",
+        "-std=gnu++20",
+        "-IC:/PROGRA~1/R/R-46~1.1/include",
         "-DNDEBUG",
-        "-IC:/Users/mtsag/AppData/Local/R/win-library/4.5/Rcpp/include",
+        "-fopenmp",
+        "-IC:/Users/mtsag/AppData/Local/R/win-library/4.6/Rcpp/include",
         "-DEIGEN_DONT_VECTORIZE",
         "-nostdinc",
         "-IC:/rtools45/x86_64-w64-mingw32.static.posix/bin/../lib/gcc/x86_64-w64-mingw32.static.posix/14.3.0/include/c++",
@@ -17,8 +18,8 @@
     ],
     "pch": "Rcpp",
     "is_cpp": true,
-    "hash": "1782720304",
+    "hash": "17950145201795014520",
     "compiler": "16001004037050314525",
-    "rversion": "4.5.2",
+    "rversion": "4.6.1",
     "dbversion": 4
 }

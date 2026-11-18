@@ -1,9 +1,0 @@
-useDynLib(kernda, .registration = TRUE)
-
-importFrom("Rfast", auc, colaucs, colmeans, rowMaxs)
-importFrom("graphics", abline)
-importFrom("stats", optimize)
-importFrom("Rcpp", sourceCpp)
-importFrom("kernreg", kern_reg)
-
-exportPattern("^[[:alpha:]]+")

@@ -12,22 +12,33 @@ Kernel regression with a binary response.
 
 \usage{
 lr.kde(xnew, groups, x, h, ncores = 1)
-lr.kde2(groups, x, h)
-lr.kde3(groups, x, h = seq(0.01, 2, by = 0.01), ncores = 1)
+lr.kde2(groups, x, h, nfolds = 10, folds = NULL, ncores = 1)
+lr.kde3(groups, x, h = seq(0.01, 2, by = 0.01), nfolds = 10,
+folds = NULL, ncores = 1)
 }
 
 \arguments{
 \item{xnew}{
-A matrix with the new predictor variables whose compositions are to be predicted.
+A numeric matrix, data.frame or vector with the new predictor variables, whose class probabilities
+are to be estimated.
 }
 \item{groups}{
-A numerical vector or a matrix with the binary response value (0s and 1s).
+The binary response values (0s and 1s). This is a vector, while lr.kde() also accepts a matrix
+with many binary responses.
 }
 \item{x}{
-A matrix with the available predictor variables.
+A numeric matrix, data.frame or vector with the available predictor variables.
+Missing values are not allowed.
 }
 \item{h}{
-The bandwidth value(s) to consider.
+For lr.kde() the bandwidth value(s) to use. For lr.kde2() a vector with the lower and the upper
+end of the interval to search. For lr.kde3() the bandwidth values to consider.
+}
+\item{nfolds}{
+The number of folds used to choose the bandwidth. This is ignored if folds is supplied.
+}
+\item{folds}{
+If you have the list with the folds supply it here. You can also leave it NULL and it will create folds.
 }
 \item{ncores}{
 The number of cores to use. If greater than 1, parallel computing will take
@@ -38,28 +49,47 @@ that code is executed serially.
 }
 
 \details{
-The Nadaraya-Watson estimator regression is applied. The function lr.kde2() chooses the bandwitdth
-value that maximizes the AUC, using the command optimize(). The function lr.kde3() does a similar
-job but for given bandwidth values and plots the results.
+The Nadaraya-Watson estimator is applied. The predictor variables are standardised by the function
+\code{kern_reg} of the package \pkg{kernreg}, so the bandwidth is in standard deviation units.
+
+The function lr.kde2() chooses the bandwidth value that maximizes the cross-validated AUC, using the
+command optimize(). The AUC is a step function of the bandwidth and it may have many local maxima, so
+optimize() may not find the global maximum. The function lr.kde3() computes the cross-validated AUC
+for given bandwidth values and plots the results. Cross-validation is used because the AUC computed
+on the training data favours ever smaller bandwidth values and approaches 1, even for pure noise.
 }
 
 \value{
-For the lr.kde() a list including:
+For lr.kde() a list including:
 
 \item{prob}{
 The estimated probabilities of belonging to class 1.
 }
 \item{cl}{
-A vector with the estimated classes.
+The estimated classes.
+}
+
+For lr.kde2() a vector with the optimal bandwidth (hopt) and its cross-validated AUC (auc).
+
+For lr.kde3() a list including:
+
+\item{perf}{
+The cross-validated AUC for each bandwidth value.
+}
+\item{hopt}{
+The optimal bandwidth value.
 }
 }
 
 \references{
-Wand M. P. and Jones M. C. (1994). Kernel smoothing. CRC press.
+Wand M.P. and Jones M.C. (1995). Kernel smoothing. CRC Press.
 }
 
 \author{
-Michail Tsagris and Christos Adam.
+Michail Tsagris and Nikolaos Kontemeniotis.
+
+R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}
+and Nikolaos Kontemeniotis \email{kontemeniotisn@gmail.com}.
 }
 
 %\note{
@@ -71,8 +101,9 @@ Michail Tsagris and Christos Adam.
 }
 
 \examples{
-groups <- as.numeric( iris[1:100, 5] ) - 1
-x <- iris[1:100, 2:4]
+groups <- as.numeric( iris[51:150, 5] ) - 2
+x <- iris[51:150, 2:4]
 est <- lr.kde(x, groups, x, h = c(0.1, 0.2) )
+lr.kde2(groups, x, h = c(0.05, 2), nfolds = 5, seed = 1)
+lr.kde3(groups, x, h = seq(0.1, 1, by = 0.1), nfolds = 5, seed = 1)
 }
-

@@ -1,29 +1,19 @@
 cv.lrkde <- function(groups, x, h = seq(0.1, 1, length = 10), nfolds = 10,
-             folds = NULL, seed = NULL, graph = FALSE, ncores = 1) {
+             folds = NULL, graph = FALSE, ncores = 1) {
 
-  if ( is.null(folds) )  folds <- Compositional::makefolds(groups, nfolds = nfolds,
-                                  stratified = TRUE, seed = seed)
+  x <- .num_matrix(x, "x")
+  y <- as.vector( .binary_response(groups, nrow(x)) )
+  .check_h(h)
+  folds <- .get_folds(y, nrow(x), nfolds, folds)
 
-  x <- as.matrix(x)
-  cv <- matrix( nrow = nfolds, ncol = length(h) )
-  colnames(cv) <- paste("h=", h, sep = "")
-
-  for ( i in 1:nfolds ) {
-    xtest <- x[ folds[[ i ]], , drop = FALSE ]   ## test sample
-    ytest <- groups[ folds[[ i ]] ] ## groups of test sample
-    xtrain <- x[ -folds[[ i ]], , drop = FALSE]  ## training sample
-    ytrain <- groups[ -folds[[ i ]] ]   ## groups of training sample
-    est <- kernreg::kern_reg(xtest, ytrain, xtrain, h = h, ncores = ncores)
-    cv[i, ] <- Rfast::colaucs(ytest, est)
-  }
-
-  perf <- Rfast::colmeans(cv)
+  cv <- .cv_auc(y, x, h, folds, ncores)
+  perf <- colMeans(cv, na.rm = TRUE)
   names(perf) <- paste("h=", h, sep = "")
 
   if ( graph ) {
     plot(h, perf, xlab = "Bandwidth (h) values", ylab = "AUC values", type = "l", lwd = 2,
          cex.lab = 1.3, cex.axis = 1.3)
-    abline(h = seq(min(perf, na.rm = FALSE), max(perf, na.rm = FALSE), length = 10), lty = 2, col = "lightgrey" )
+    abline(h = seq(min(perf), max(perf), length = 10), lty = 2, col = "lightgrey" )
     abline(v = h[which.max(perf)], col = 3, lwd = 2)
   }
 
