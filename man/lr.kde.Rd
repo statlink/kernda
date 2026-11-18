@@ -97,13 +97,13 @@ and Nikolaos Kontemeniotis \email{kontemeniotisn@gmail.com}.
     %}
 
 \seealso{
-\code{\link{cv.lrkde}}
+\code{\link{cv.lrkde}, \link{mlr.kde}}
 }
 
 \examples{
 groups <- as.numeric( iris[51:150, 5] ) - 2
 x <- iris[51:150, 2:4]
 est <- lr.kde(x, groups, x, h = c(0.1, 0.2) )
-lr.kde2(groups, x, h = c(0.05, 2), nfolds = 5, seed = 1)
-lr.kde3(groups, x, h = seq(0.1, 1, by = 0.1), nfolds = 5, seed = 1)
+lr.kde2(groups, x, h = c(0.05, 2), nfolds = 5)
+lr.kde3(groups, x, h = seq(0.1, 1, by = 0.1), nfolds = 5)
 }

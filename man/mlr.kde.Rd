@@ -1,5 +1,5 @@
 \name{mlr.kde}
-\alias{lr.kde}
+\alias{mlr.kde}
 \title{
 Kernel regression with a multinomial response
 }
@@ -71,7 +71,7 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
     %}
 
 \seealso{
-\code{\link{cv.lrkde}}
+\code{\link{lr.kde}}
 }
 
 \examples{
