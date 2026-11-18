@@ -19,14 +19,16 @@ using std::vector;
 // Returns a list with
 //   class : length(xnew) x m integer matrix of predicted groups
 //   kde   : list of m matrices, each length(xnew) x max(groups), whose entry
-//           [i, g] is the kernel density estimate of group g at xnew[i].
+//           [i, g] is the kernel density estimate of group g at xnew[i], or
+//           its logarithm if logged is true.
 //
 // [[Rcpp::export(.kde_da_cpp)]]
 Rcpp::List kde_da_cpp(const Rcpp::NumericVector &xnew,
                       const Rcpp::IntegerVector &groups,
                       const Rcpp::NumericVector &x,
                       const Rcpp::NumericMatrix &H,
-                      int ncores = 1) {
+                      int ncores = 1,
+                      bool logged = false) {
   const int sizeOld = x.size();
   const int sizeNew = xnew.size();
   const int numGroups = H.nrow();
@@ -66,7 +68,7 @@ Rcpp::List kde_da_cpp(const Rcpp::NumericVector &xnew,
   }
 
   const double *p_xnew = xnew.begin();
-  const double sqrt2pi = std::sqrt(2.0 * M_PI);
+  const double logsqrt2pi = 0.5 * std::log(2.0 * M_PI);
   const double inf = std::numeric_limits<double>::infinity();
 
 #ifdef _OPENMP
@@ -99,11 +101,10 @@ Rcpp::List kde_da_cpp(const Rcpp::NumericVector &xnew,
         const int m = pts.size();
         const double *ginv = inv2h2.data() + g * (std::size_t)numH;
         const double *glogh = logh.data() + g * (std::size_t)numH;
-        const double *gh = hval.data() + g * (std::size_t)numH;
 
         if (m == 0) {
           for (int k = 0; k < numH; ++k)
-            p_kde[k][j + g * (std::size_t)sizeNew] = 0.0;
+            p_kde[k][j + g * (std::size_t)sizeNew] = logged ? -inf : 0.0;
           continue;
         }
 
@@ -133,8 +134,8 @@ Rcpp::List kde_da_cpp(const Rcpp::NumericVector &xnew,
             best[k] = score;
             bestId[k] = g;
           }
-          p_kde[k][j + g * (std::size_t)sizeNew] =
-              acc[k] * std::exp(shift) / (m * gh[k] * sqrt2pi);
+          const double logf = score - std::log((double)m) - logsqrt2pi;
+          p_kde[k][j + g * (std::size_t)sizeNew] = logged ? logf : std::exp(logf);
         }
       }
 

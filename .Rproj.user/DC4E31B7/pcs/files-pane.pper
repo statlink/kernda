@@ -1,9 +1,9 @@
 {
-    "path": "~/GitHub/kernda/man",
     "sortOrder": [
         {
             "columnIndex": 2,
             "ascending": true
         }
-    ]
+    ],
+    "path": "~/GitHub/kernda/man"
 }

@@ -42,13 +42,12 @@ but the predicted groups are still computed correctly.
 \value{
 A list including:
 \item{class}{
-An integer matrix with the predicted groups. It has one row for each value of xnew and one column
-for each value of h. Missing values of xnew receive NA.
+A vector with the predicted groups, one for each row of xnew.
 }
 \item{score}{
-A list with one matrix for each value of h, even if h is a single number. The names of the list are
-the values of h. Each matrix has one row for each value of xnew and one column for each group, and it
-contains the kernel density estimates of the groups at xnew. Missing values of xnew receive NA.
+A matrix with one row for each row of xnew and one column for each group. It contains the sum of the
+logarithms of the kernel density estimates over the variables plus the logarithm of the prior probability
+of each group, that is, the logarithm of the unnormalised posterior probabilities.
 }
 }
 

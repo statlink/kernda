@@ -1,4 +1,4 @@
-kde_da <- function(xnew, groups, x, h = NULL, ncores = 1L) {
+kde_da <- function(xnew, groups, x, h = NULL, ncores = 1L, logged = FALSE) {
 
   groups <- as.integer(groups)
   if ( length(x) == 0 )  stop("'x' must not be empty.", call. = FALSE)
@@ -21,7 +21,7 @@ kde_da <- function(xnew, groups, x, h = NULL, ncores = 1L) {
     nam <- h
   }
 
-  res <- .kde_da_cpp(xnew, groups, x, H, ncores)
+  res <- .kde_da_cpp(xnew, groups, x, H, ncores, logged)
   names(res$kde) <- nam
   res$h <- h
   res
