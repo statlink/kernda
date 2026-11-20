@@ -15,8 +15,8 @@ References: Wand M.P. and Jones M.C. (1995). Kernel smoothing. CRC Press.
 \tabular{ll}{
 Package: \tab kernda\cr
 Type: \tab Package\cr
-Version: \tab 1.0 \cr
-Date: \tab 2026-06-29 \cr
+Version: \tab 1.1 \cr
+Date: \tab 2026-11-19 \cr
 }
 }
 
